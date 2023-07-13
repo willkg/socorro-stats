@@ -22,4 +22,12 @@ jobs:
           .venv/bin/python bin/update_data.py socorro_stats.json
 
       - name: commit
-        run: bin/commit.sh
+        run: |-
+          TIMESTAMP=$(date -u)
+          echo ">>> adding changes (if any)..."
+          git config user.name "Automated"
+          git config user.email "actions@users.noreply.github.com"
+          echo ">>> committing..."
+          git commit -a -m "Update data: ${TIMESTAMP}" || (echo ">>> nothing to commit"; exit 0)
+          echo ">>> pushing changes..."
+          git push
