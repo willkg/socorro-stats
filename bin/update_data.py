@@ -66,7 +66,8 @@ data_item = {
     "date": YESTERDAY,
     "total": resp_data["total"],
 }
-data_item.update(resp_data["facets"]["product"])
+for item in resp_data["facets"]["product"]:
+    data_item[item["term"]] = item["count"]
 
 with open("socorro_stats.json", "r") as fp:
     all_data = json.load(fp)
