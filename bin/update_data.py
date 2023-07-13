@@ -69,7 +69,12 @@ data_item = {
     "total": resp_data["total"],
     "facet_product": resp_data["facets"]["product"],
 }
-all_data.append(data_item)
+# Replace an existing item with the date or append the new item
+for i in range(len(all_data)):
+    if all_data[i]["date"] == YESTERDAY:
+        all_data[i] = data_item
+else:
+    all_data.append(data_item)
 
 with open("socorro_stats.json", "w") as fp:
     json.dump(all_data, fp)
