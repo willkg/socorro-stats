@@ -61,14 +61,16 @@ resp.raise_for_status()
 resp_data = resp.json()
 print(resp_data)
 
-with open("socorro_stats.json", "r") as fp:
-    all_data = json.load(fp)
-
+# Generate record
 data_item = {
     "date": YESTERDAY,
     "total": resp_data["total"],
-    "facet_product": resp_data["facets"]["product"],
 }
+data_item.update(resp_data["facets"]["product"])
+
+with open("socorro_stats.json", "r") as fp:
+    all_data = json.load(fp)
+
 # Replace an existing item with the date or append the new item
 for i in range(len(all_data)):
     if all_data[i]["date"] == YESTERDAY:

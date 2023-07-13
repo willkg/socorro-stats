@@ -2,6 +2,9 @@
 
 Crash report stats over time.
 
+* License: MPLv2
+* Author: Will Kahn-Greene
+
 Note: The number of crash reports isn't wildly meaningful. This is not helpful
 for determining crash rates for Firefox or other Mozilla products. Crash
 reports are throttled, removed, duplicated, omitted entirely, etc. Further, crash
@@ -14,5 +17,4 @@ months, so this would allow us to see further into the past.
 
 This is all very prototype-y and hand-waving and alpha-quality at best.
 
-* License: MPLv2
-* Author: Will Kahn-Greene
+In table form: https://flatgithub.com/willkg/socorro-stats
