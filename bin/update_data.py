@@ -55,34 +55,41 @@ def fetch_data(start_date, end_date):
     return resp_data
 
 
-today_dt = datetime.datetime.today()
-end_date = today_dt.strftime("%Y-%m-%d")
-start_date = (today_dt - datetime.timedelta(days=1)).strftime("%Y-%m-%d")
+def update_data(today_dt):
+    end_date = today_dt.strftime("%Y-%m-%d")
+    start_date = (today_dt - datetime.timedelta(days=1)).strftime("%Y-%m-%d")
 
-resp_data = fetch_data(start_date, end_date)
+    resp_data = fetch_data(start_date, end_date)
 
-# Generate record
-data_item = {
-    "date": start_date,
-    "total": resp_data["total"],
-}
-data_item.update(
-    {
-        item["term"]: item["count"]
-        for item in resp_data["facets"]["product"]
+    if resp_data["errors"]:
+        return
+
+    # Generate record
+    data_item = {
+        "date": start_date,
+        "total": resp_data["total"],
     }
-)
+    data_item.update(
+        {
+            item["term"]: item["count"]
+            for item in resp_data["facets"]["product"]
+        }
+    )
 
-with open("socorro_stats.json", "r") as fp:
-    all_data = json.load(fp)
+    with open("socorro_stats.json", "r") as fp:
+        all_data = json.load(fp)
 
-# Replace an existing item with the date or append the new item
-for i in range(len(all_data)):
-    if all_data[i]["date"] == start_date:
-        all_data[i] = data_item
-        break
-else:
-    all_data.append(data_item)
+    # Replace an existing item with the date or append the new item
+    for i in range(len(all_data)):
+        if all_data[i]["date"] == start_date:
+            all_data[i] = data_item
+            break
+    else:
+        all_data.append(data_item)
 
-with open("socorro_stats.json", "w") as fp:
-    json.dump(all_data, fp)
+    with open("socorro_stats.json", "w") as fp:
+        json.dump(all_data, fp)
+
+
+today_dt = datetime.datetime.today()
+update_data(today_dt)
