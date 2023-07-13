@@ -9,13 +9,15 @@
 # Commits and pushes any changes in the workspace.
 
 TIMESTAMP=$(date -u)
-AUTHOR="automated <actions@users.noreply.github.com>"
 
 # Create a commit if there's anything to commit
 echo ">>> adding changes (if any)..."
+git config user.name "Automated"
+git config user.email "actions@users.noreply.github.com"
 git add -A
+
 echo ">>> committing..."
-git commit -m "Update data: ${TIMESTAMP}" --author="${AUTHOR}" || (echo ">>> nothing to commit"; exit 0)
+git commit -m "Update data: ${TIMESTAMP}" || (echo ">>> nothing to commit"; exit 0)
 
 # Push changes
 echo ">>> pushing changes..."
