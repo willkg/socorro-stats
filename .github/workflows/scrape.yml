@@ -1,0 +1,25 @@
+---
+name: Download and update data
+
+on:
+  push:
+  workflow_dispatch:
+  schedule:
+    # Every day at 01:00
+    - cron: '0 1 * * *'
+
+jobs:
+  scheduled:
+    runs-on: ubuntu-latest
+    steps:
+      - name: check out repo
+        uses: actions/checkout@v3
+
+      - name: update data
+        run: |-
+          python -m venv .venv
+          .venv/bin/pip install -r requirements.txt
+          .venv/bin/python bin/update_data.py socorro_stats.json
+
+      - name: commit
+        run: bin/commit.sh
