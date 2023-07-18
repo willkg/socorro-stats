@@ -57,7 +57,8 @@ def fetch_data(start_date, end_date):
 
 def update_data(today_dt):
     end_date = today_dt.strftime("%Y-%m-%d")
-    start_date = (today_dt - datetime.timedelta(days=1)).strftime("%m-%d-%Y")
+    start_date = (today_dt - datetime.timedelta(days=1)).strftime("%Y-%m-%d")
+    data_start_date = (today_dt - datetime.timedelta(days=1)).strftime("%m-%d-%Y")
 
     resp_data = fetch_data(start_date, end_date)
 
@@ -66,7 +67,7 @@ def update_data(today_dt):
 
     # Generate record
     data_item = {
-        "date": start_date,
+        "date": data_start_date,
         "total": resp_data["total"],
     }
     data_item.update(
