@@ -7,6 +7,7 @@
 import datetime
 import json
 import logging
+import time
 
 import requests
 
@@ -90,6 +91,15 @@ def update_data(today_dt):
 
     with open("socorro_stats.json", "w") as fp:
         json.dump(all_data, fp)
+
+
+def rebuild_data():
+    """Use for rebuilding the data for the last 180 days"""
+    for i in range(180):
+        today_dt = datetime.datetime.today() - datetime.timedelta(days=i)
+        update_data(today_dt)
+        if i % 20 == 0:
+            time.sleep(30)
 
 
 today_dt = datetime.datetime.today()
